@@ -1,3 +1,5 @@
+package Lab;
+
 import java.util.Scanner;
 
 public class MultiplicationTable2 {
