@@ -1,6 +1,5 @@
 package MoreExercises;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class ArrayManipulator {
