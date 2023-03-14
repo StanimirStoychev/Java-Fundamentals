@@ -3,27 +3,28 @@ package Lab;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class ListManipulationAdvanced {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        List<Integer> numbers = Arrays.stream(scanner.nextLine().split(" "))
-                            .mapToInt(Integer::parseInt)
-                            .boxed().toList();
+        List<Integer> numbers = Arrays.stream(scanner.nextLine().split("\\s+"))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
 
         String command;
 
         while (!"end".equals(command = scanner.nextLine())) {
-            List<String> commandParts = Arrays.stream(scanner.nextLine().split(" ")).toList();
+            List<String> commandParts = Arrays.stream(command.split("\\s+")).toList();
             String currentCommand = commandParts.get(0);
 
             switch (currentCommand) {
-                case "Contains":
+                case "Contains" -> {
                     int number = Integer.parseInt(commandParts.get(1));
                     contains(numbers, number);
-                    break;
-                case "Print":
+                }
+                case "Print" -> {
                     String evenOrOdd = commandParts.get(1);
                     switch (evenOrOdd) {
                         case "even":
@@ -33,15 +34,13 @@ public class ListManipulationAdvanced {
                             printOdd(numbers);
                             break;
                     }
-                    break;
-                case "Get":
-                    getSum(numbers);
-                    break;
-                case "Filter":
+                }
+                case "Get" -> getSum(numbers);
+                case "Filter" -> {
                     String condition = commandParts.get(1);
                     int num = Integer.parseInt(commandParts.get(2));
                     filter(numbers, condition, num);
-                    break;
+                }
             }
         }
     }
@@ -49,7 +48,8 @@ public class ListManipulationAdvanced {
     private static void contains(List<Integer> numbers, int number) {
         if (numbers.contains(number)) {
             System.out.println("Yes");
-        } else {
+        }
+        if (!numbers.contains(number)){
             System.out.println("No such number");
         }
     }
@@ -82,25 +82,26 @@ public class ListManipulationAdvanced {
             switch (condition) {
                 case ">":
                     if (integer > number) {
-                        System.out.println(integer);
+                        System.out.print(integer + " ");
                     }
                     break;
                 case "<":
                     if (integer < number) {
-                        System.out.println(integer);
+                        System.out.print(integer + " ");
                     }
                     break;
                 case ">=":
                     if (integer >= number) {
-                        System.out.println(integer);
+                        System.out.print(integer + " ");
                     }
                     break;
                 case "<=":
                     if (integer <= number) {
-                        System.out.println(integer);
+                        System.out.print(integer + " ");
                     }
                     break;
             }
         }
+        System.out.println();
     }
 }
