@@ -10,13 +10,13 @@ public class MixedUpLists {
         List<Integer> first = readListOfIntegersSeparatedBySpace(scanner);
         List<Integer> second = readListOfIntegersSeparatedBySpace(scanner);
 
-        boolean firstIsBigger = whichListIsBigger(first, second);
+        boolean isFirstBigger = whichListIsWithBiggerSize(first, second);
 
-        int length = getTheSmallestSize(first, second, firstIsBigger);
+        int length = getTheSmallestSizeOfList(first, second, isFirstBigger);
 
         List<Integer> result = new ArrayList<>();
 
-        mainAction(first, second, length, result, firstIsBigger);
+        mainAction(first, second, length, result, isFirstBigger);
 
         Collections.sort(result);
 
@@ -34,7 +34,8 @@ public class MixedUpLists {
         result.forEach(e -> System.out.print(e + " "));
     }
 
-    private static void mainAction(List<Integer> first, List<Integer> second, int length, List<Integer> result, boolean firstIsBigger) {
+    private static void mainAction(List<Integer> first, List<Integer> second, int length, List<Integer> result
+            , boolean firstIsBigger) {
         int min = 0;
         int max = 0;
         if (firstIsBigger) {
@@ -50,7 +51,7 @@ public class MixedUpLists {
         for (int i = 0; i < length; i++) {
             int currentFirst = first.get(i);
             int currentSecond = second.get(i);
-            addWithCondition(result, min, max, currentFirst, currentSecond);
+            addNumbersWithCondition(result, min, max, currentFirst, currentSecond);
         }
     }
 
@@ -66,7 +67,7 @@ public class MixedUpLists {
         return min;
     }
 
-    private static void addWithCondition(List<Integer> result, int min, int max, int currentFirst, int currentSecond) {
+    private static void addNumbersWithCondition(List<Integer> result, int min, int max, int currentFirst, int currentSecond) {
         if (currentFirst > min && currentFirst < max) {
             result.add(currentFirst);
         }
@@ -75,7 +76,7 @@ public class MixedUpLists {
         }
     }
 
-    private static int getTheSmallestSize(List<Integer> first, List<Integer> second, boolean firstIsBigger) {
+    private static int getTheSmallestSizeOfList(List<Integer> first, List<Integer> second, boolean firstIsBigger) {
         int length;
         if (firstIsBigger) {
             length = second.size();
@@ -85,7 +86,7 @@ public class MixedUpLists {
         return length;
     }
 
-    private static boolean whichListIsBigger(List<Integer> first, List<Integer> second) {
+    private static boolean whichListIsWithBiggerSize(List<Integer> first, List<Integer> second) {
 
         boolean isFirstBigger = false;
         if (first.size() > second.size()) {
