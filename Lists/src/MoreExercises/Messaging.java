@@ -12,9 +12,10 @@ public class Messaging {
 
         List<String> numbers = Arrays.stream(scanner.nextLine().split("\\s+")).collect(Collectors.toList());
         String text = scanner.nextLine();
+        List<String> chars = Arrays.stream(text.split("")).collect(Collectors.toList());
         StringBuilder output = new StringBuilder();
 
-        mainAction(numbers, text, output);
+        mainAction(numbers, chars, output);
         printOutput(output);
     }
 
@@ -22,33 +23,30 @@ public class Messaging {
         System.out.println(output);
     }
 
-    private static void mainAction(List<String> numbers, String text, StringBuilder output) {
+    private static void mainAction(List<String> numbers, List<String> chars, StringBuilder output) {
         for (int i = 0; i < numbers.size(); i++) {
 
             String number = numbers.get(i);
 
-            int index = getIndex(i, number, text);
+            int index = getIndex(i, number, chars);
 
-            fillTheOutput(text, output, index);
+            fillTheOutput(chars , output, index);
         }
     }
 
-    private static void fillTheOutput(String text, StringBuilder output, int index) {
-        output.append(text.charAt(index));
+    private static void fillTheOutput(List<String> chars, StringBuilder output, int index) {
+        output.append(chars.get(index));
+        chars.remove(index);
     }
 
-    private static int getIndex(int i, String number, String text) {
+    private static int getIndex(int i, String number, List<String> chars) {
         int index = 0;
         for (int j = 0; j < number.length(); j++) {
-            index = index + Integer.parseInt(String.valueOf(number.charAt(i)));
+            index = index + Integer.parseInt(String.valueOf(number.charAt(j)));
         }
-        checkRealIndex(text, index);
+        while (index > chars.size()) {
+            index = index - chars.size();
+        }
         return index;
-    }
-
-    private static void checkRealIndex(String text, int index) {
-        while (index > text.length()) {
-            index = index - text.length();
-        }
     }
 }
