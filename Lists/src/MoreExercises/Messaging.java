@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 public class Messaging {
     public static void main(String[] args) {
-        //NOT WORKING NOW
         Scanner scanner = new Scanner(System.in);
 
         List<String> numbers = Arrays.stream(scanner.nextLine().split("\\s+")).collect(Collectors.toList());
