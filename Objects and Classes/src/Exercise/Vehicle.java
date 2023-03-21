@@ -53,8 +53,12 @@ public class Vehicle {
 
         printDesiredVehiclesByModel(scanner, cars, trucks);
 
-        System.out.printf("Cars have average horsepower of: %.2f.%n", average(cars));
-        System.out.printf("Trucks have average horsepower of: %.2f.", average(trucks));
+        printAvgHp("Cars", cars);
+        printAvgHp("Trucks", trucks);
+    }
+
+    private static void printAvgHp(String type, List<Vehicle> vehicles) {
+        System.out.printf("%s have average horsepower of: %.2f.%n", type, average(vehicles));
     }
 
     private static void printDesiredVehiclesByModel(Scanner scanner, List<Vehicle> cars, List<Vehicle> trucks) {
