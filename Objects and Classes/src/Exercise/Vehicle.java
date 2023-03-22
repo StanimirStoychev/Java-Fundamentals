@@ -4,43 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Vehicle {
-
-    private String type;
-    private String model;
-    private String color;
-    private int horsepower;
-
-    public Vehicle(String type, String model, String color, int horsepower) {
-        this.type = type;
-        this.model = model;
-        this.color = color;
-        this.horsepower = horsepower;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public int getHorsepower() {
-        return horsepower;
-    }
+public record Vehicle(String type, String model, String color, int horsepower) {
 
     @Override
     public String toString() {
         return String.format("Type: %s%n" +
-                "Model: %s%n" +
-                "Color: %s%n" +
-                "Horsepower: %d", getType().toUpperCase().charAt(0) + this.getType().substring(1),
-                getModel(), getColor(), getHorsepower());
+                        "Model: %s%n" +
+                        "Color: %s%n" +
+                        "Horsepower: %d", type().toUpperCase().charAt(0) + this.type().substring(1),
+                model(), color(), horsepower());
     }
 
     public static void main(String[] args) {
@@ -67,17 +39,17 @@ public class Vehicle {
         while (!"Close the Catalogue".equals(model = scanner.nextLine())) {
             String finalModel = model;
             cars.stream()
-                    .filter(v -> v.getModel().equals(finalModel))
+                    .filter(v -> v.model().equals(finalModel))
                     .forEach(System.out::println);
             trucks.stream()
-                    .filter(v -> v.getModel().equals(finalModel))
+                    .filter(v -> v.model().equals(finalModel))
                     .forEach(System.out::println);
         }
     }
 
     private static double average(List<Vehicle> vehicles) {
         return vehicles.stream()
-                .mapToDouble(Vehicle::getHorsepower).average().orElse(0);
+                .mapToDouble(Vehicle::horsepower).average().orElse(0);
     }
 
     private static void fillTheListsWithVehiclesByType(Scanner scanner, List<Vehicle> cars, List<Vehicle> trucks) {
@@ -90,12 +62,8 @@ public class Vehicle {
             int horsepower = Integer.parseInt(data[3]);
             Vehicle vehicle = new Vehicle(type, model, color, horsepower);
             switch (type) {
-                case "car":
-                    cars.add(vehicle);
-                    break;
-                case "truck":
-                    trucks.add(vehicle);
-                    break;
+                case "car" -> cars.add(vehicle);
+                case "truck" -> trucks.add(vehicle);
             }
         }
     }
