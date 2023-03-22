@@ -14,6 +14,21 @@ public class CompanyRoster {
 
         Map<String, List<Employee>> departments = new HashMap<>();
 
+        fillTheMap(scanner, lines, departments);
+
+        output(departments);
+
+
+    }
+
+    private static void output(Map<String, List<Employee>> departments) {
+        departments.entrySet().stream().sorted(getComparator()).limit(1).forEach(e -> {
+            System.out.println(String.format("Highest Average Salary: %s", e.getKey()));
+            e.getValue().stream().sorted((a,b) -> Double.compare(b.getSalary(), a.getSalary())).forEach(o -> System.out.println(String.format("%s %.2f %s %d", o.getName(), o.getSalary(), o.getEmail(), o.getAge())));
+        });
+    }
+
+    private static void fillTheMap(Scanner scanner, int lines, Map<String, List<Employee>> departments) {
         while (lines-- > 0) {
 
             String input = scanner.nextLine();
@@ -27,35 +42,36 @@ public class CompanyRoster {
 
             Employee employee = new Employee(name, salary, position, department);
 
-            if (data.size() == 5) {
-                if (input.contains("@")) {
-                    employee.email = data.get(4);
-                } else {
-                    employee.setAge(Integer.parseInt(data.get(4)));
-                }
-            } else if (data.size() == 6) {
-                employee.setEmail(data.get(4));
-                employee.setAge(Integer.parseInt(data.get(5)));
-
-            }
-            if (!departments.containsKey(department)) {
-                departments.put(department, new ArrayList<>());
-                departments.get(department).add(employee);
-            } else {
-                departments.get(department).add(employee);
-            }
+            validation(departments, input, data, department, employee);
         }
+    }
 
-        departments.entrySet().stream().sorted((a, b) -> {
+    private static void validation(Map<String, List<Employee>> departments, String input, List<String> data, String department, Employee employee) {
+        if (data.size() == 5) {
+            if (input.contains("@")) {
+                employee.email = data.get(4);
+            } else {
+                employee.setAge(Integer.parseInt(data.get(4)));
+            }
+        } else if (data.size() == 6) {
+            employee.setEmail(data.get(4));
+            employee.setAge(Integer.parseInt(data.get(5)));
+
+        }
+        if (!departments.containsKey(department)) {
+            departments.put(department, new ArrayList<>());
+            departments.get(department).add(employee);
+        } else {
+            departments.get(department).add(employee);
+        }
+    }
+
+    private static Comparator<Map.Entry<String, List<Employee>>> getComparator() {
+        return (a, b) -> {
             double avrFirst = a.getValue().stream().mapToDouble(Employee::getSalary).average().orElse(Double.NaN);
             double avrSecond = b.getValue().stream().mapToDouble(Employee::getSalary).average().orElse(Double.NaN);
             return Double.compare(avrSecond, avrFirst);
-        }).limit(1).forEach(e -> {
-            System.out.println(String.format("Highest Average Salary: %s", e.getKey()));
-            e.getValue().stream().sorted((a,b) -> Double.compare(b.getSalary(), a.getSalary())).forEach(o -> System.out.println(String.format("%s %.2f %s %d", o.getName(), o.getSalary(), o.getEmail(), o.getAge())));
-        });
-
-
+        };
     }
 
     public static class Employee {
