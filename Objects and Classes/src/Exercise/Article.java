@@ -24,6 +24,7 @@ public class Article {
         return this;
     }
 
+
     public Article setAuthor(String author) {
         this.author = author;
         return this;
