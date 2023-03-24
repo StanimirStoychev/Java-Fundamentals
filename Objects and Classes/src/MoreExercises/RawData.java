@@ -14,10 +14,14 @@ public class RawData {
 
     private static class Car {
 
-        private String model;
-        private Engine engine;
-        private Cargo cargo;
+        private final String model;
+        private final Engine engine;
+        private final Cargo cargo;
         private List<Tire> tires;
+
+        public Cargo getCargo() {
+            return cargo;
+        }
 
         public Car(String model, Engine engine, Cargo cargo, List<Tire> tires){
             this.model = model;
@@ -30,36 +34,16 @@ public class RawData {
             return model;
         }
 
-        public Car setModel(String model) {
-            this.model = model;
-            return this;
-        }
-
         public Engine getEngine() {
             return engine;
-        }
-
-        public Car setEngine(Engine engine) {
-            this.engine = engine;
-            return this;
-        }
-
-        public Cargo getCargo() {
-            return cargo;
-        }
-
-        public Car setCargo(Cargo cargo) {
-            this.cargo = cargo;
-            return this;
         }
 
         public List<Tire> getTires() {
             return tires;
         }
 
-        public Car setTires(List<Tire> tires) {
+        public void setTires(List<Tire> tires) {
             this.tires = tires;
-            return this;
         }
 
         @Override
@@ -83,17 +67,13 @@ public class RawData {
     private static void printOutputByType(Scanner scanner, List<Car> cars) {
         String type = scanner.nextLine();
 
-        switch (type){
-            case "fragile":
-                cars.stream()
-                        .filter(c -> c.getTires().stream().anyMatch(t -> t.pressure() < 1))
-                        .forEach(System.out::println);
-                break;
-            case "flamable":
-                cars.stream()
-                        .filter(c -> c.getEngine().power() > 250)
-                        .forEach(System.out::println);
-                break;
+        switch (type) {
+            case "fragile" -> cars.stream()
+                    .filter(c -> c.getTires().stream().anyMatch(t -> t.pressure() < 1) && c.getCargo().type.equals("fragile"))
+                    .forEach(System.out::println);
+            case "flamable" -> cars.stream()
+                    .filter(c -> c.getEngine().power() > 250 && c.getCargo().type.equals("flamable"))
+                    .forEach(System.out::println);
         }
     }
 
