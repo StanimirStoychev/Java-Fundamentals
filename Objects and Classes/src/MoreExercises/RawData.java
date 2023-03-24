@@ -69,7 +69,8 @@ public class RawData {
 
         switch (type) {
             case "fragile" -> cars.stream()
-                    .filter(c -> c.getTires().stream().anyMatch(t -> t.pressure() < 1) && c.getCargo().type.equals("fragile"))
+                    .filter(c -> c.getTires()
+                            .stream().anyMatch(t -> t.pressure() < 1) && c.getCargo().type.equals("fragile"))
                     .forEach(System.out::println);
             case "flamable" -> cars.stream()
                     .filter(c -> c.getEngine().power() > 250 && c.getCargo().type.equals("flamable"))
@@ -80,11 +81,11 @@ public class RawData {
     private static void addCars(Scanner scanner, int n, List<Car> cars) {
         for (int i = 0; i < n; i++) {
             String[] info = scanner.nextLine().split("\\s+");
-            setCar(cars, info);
+            addCar(cars, info);
         }
     }
 
-    private static void setCar(List<Car> cars, String[] info) {
+    private static void addCar(List<Car> cars, String[] info) {
         String model = info[0];
 
         int speed = Integer.parseInt(info[1]);
@@ -96,12 +97,12 @@ public class RawData {
         Cargo cargo = new Cargo(weight, type);
 
         List<Tire> tires = new ArrayList<>();
-        setTires(info, tires);
+        addTires(info, tires);
         Car car = new Car(model, engine, cargo, tires);
         cars.add(car);
     }
 
-    private static void setTires(String[] info, List<Tire> tires) {
+    private static void addTires(String[] info, List<Tire> tires) {
         for (int j = 5; j < info.length; j += 2) {
             double pressure = Double.parseDouble(info[j]);
             int age = Integer.parseInt(info[j + 1]);
