@@ -1,15 +1,13 @@
 package MoreExercises;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class CarSalesman {
 
     private static class Car {
 
-        private String model;
-        private Engine engine;
+        private final String model;
+        private final Engine engine;
         private String weight;
         private String color;
 
@@ -24,36 +22,25 @@ public class CarSalesman {
             return model;
         }
 
-        public Car setModel(String model) {
-            this.model = model;
-            return this;
-        }
 
         public Engine getEngine() {
             return engine;
-        }
-
-        public Car setEngine(Engine engine) {
-            this.engine = engine;
-            return this;
         }
 
         public String getWeight() {
             return weight;
         }
 
-        public Car setWeight(String weight) {
+        public void setWeight(String weight) {
             this.weight = weight;
-            return this;
         }
 
         public String getColor() {
             return color;
         }
 
-        public Car setColor(String color) {
+        public void setColor(String color) {
             this.color = color;
-            return this;
         }
 
         @Override
@@ -67,8 +54,8 @@ public class CarSalesman {
 
     private static class Engine {
 
-        private String model;
-        private int power;
+        private final String model;
+        private final int power;
         private String displacement;
         private String efficiency;
 
@@ -83,36 +70,24 @@ public class CarSalesman {
             return model;
         }
 
-        public Engine setModel(String model) {
-            this.model = model;
-            return this;
-        }
-
         public int getPower() {
             return power;
-        }
-
-        public Engine setPower(int power) {
-            this.power = power;
-            return this;
         }
 
         public String getDisplacement() {
             return displacement;
         }
 
-        public Engine setDisplacement(String displacement) {
+        public void setDisplacement(String displacement) {
             this.displacement = displacement;
-            return this;
         }
 
         public String getEfficiency() {
             return efficiency;
         }
 
-        public Engine setEfficiency(String efficiency) {
+        public void setEfficiency(String efficiency) {
             this.efficiency = efficiency;
-            return this;
         }
 
         @Override
@@ -125,35 +100,64 @@ public class CarSalesman {
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
         List<Engine> engines = new ArrayList<>();
 
-        addEngines(scanner, engines);
+        addEngines(engines);
 
-        //Not working yet!
+        printDesiredCars(engines);
     }
 
-    private static void addEngines(Scanner scanner, List<Engine> engines) {
+    private static void printDesiredCars(List<Engine> engines) {
+        Scanner scanner = new Scanner(System.in);
+
         int n = Integer.parseInt(scanner.nextLine());
 
         for (int i = 0; i < n; i++) {
-            addEngine(scanner, engines);
+            Car car = addCar(engines);
+            printCarInfo(car);
         }
     }
 
-    private static void addEngine(Scanner scanner, List<Engine> engines) {
+    private static void printCarInfo(Car car) {
+        System.out.println(car);
+    }
+
+    private static Car addCar(List<Engine> engines) {
+        Scanner scanner = new Scanner(System.in);
+
+        String[] info = scanner.nextLine().split("\\s+");
+        String model = info[0];
+        Engine engine = engines.stream().filter(e -> e.getModel().equals(info[1])).findFirst().orElseThrow(NoSuchElementException::new);
+        Car car = new Car(model, engine);
+        checkInputElementsForCar(info, car);
+        return car;
+    }
+
+    private static void addEngines(List<Engine> engines) {
+        Scanner scanner = new Scanner(System.in);
+
+        int n = Integer.parseInt(scanner.nextLine());
+
+        for (int i = 0; i < n; i++) {
+            addEngine(engines);
+        }
+    }
+
+    private static void addEngine(List<Engine> engines) {
+        Scanner scanner = new Scanner(System.in);
+
         String[] input = scanner.nextLine().split("\\s+");
         String model = input[0];
         int power = Integer.parseInt(input[1]);
 
         Engine engine = new Engine(model, power);
 
-        checkInputElements(input, engine);
+        checkInputElementsForEngine(input, engine);
         engines.add(engine);
     }
 
-    private static void checkInputElements(String[] input, Engine engine) {
+    private static void checkInputElementsForEngine(String[] input, Engine engine) {
         if (input.length >= 3) {
             String element = input[2];
             if (element.charAt(0) >= 48 && element.charAt(0) <= 57) {
@@ -164,9 +168,28 @@ public class CarSalesman {
             if (input.length >= 4) {
                 element = input[3];
                 if (engine.getDisplacement().equals("n/a")) {
-                    engine.setEfficiency(element);
-                } else {
                     engine.setDisplacement(element);
+                } else {
+                    engine.setEfficiency(element);
+                }
+            }
+        }
+    }
+
+    private static void checkInputElementsForCar(String[] info, Car car) {
+        if (info.length >= 3) {
+            String element = info[2];
+            if (element.charAt(0) >= 48 && element.charAt(0) <= 57) {
+                car.setWeight(element);
+            } else {
+                car.setColor(element);
+            }
+            if (info.length >= 4) {
+                element = info[3];
+                if (car.getWeight().equals("n/a")) {
+                    car.setWeight(element);
+                } else {
+                    car.setColor(element);
                 }
             }
         }
