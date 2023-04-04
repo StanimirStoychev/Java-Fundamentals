@@ -14,6 +14,8 @@ public class Ranking {
 
         fillUsersAndTheirPointsForContests(scanner, contestPassword, users);
 
+        scanner.close();
+
         printBestCandidate(users);
 
         printAllUsersSorted(users);
