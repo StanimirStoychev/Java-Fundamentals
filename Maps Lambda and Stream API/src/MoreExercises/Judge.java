@@ -18,6 +18,7 @@ public class Judge {
     }
 
     private static void printStandings(Map<String, LinkedHashMap<String, Integer>> contests) {
+
         Map<String, Integer> standings = new LinkedHashMap<>();
         AtomicInteger num = new AtomicInteger(1);
 
